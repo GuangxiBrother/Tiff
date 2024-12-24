@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curtain Reveal</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+    }
+
+    .image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    .image-container img {
+      max-width: 80%;
+      height: auto;
+    }
+
+    .curtain {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100vh;
+      background: radial-gradient(circle at 20% 50%, #8b0000, #640000 60%);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+      transition: transform 2s ease-in-out;
+      z-index: 2;
+    }
+
+    .curtain.left {
+      left: 0;
+      transform: translateX(0);
+      background: radial-gradient(circle at 80% 50%, #8b0000, #640000 60%);
+    }
+
+    .curtain.right {
+      right: 0;
+      transform: translateX(0);
+      background: radial-gradient(circle at 20% 50%, #8b0000, #640000 60%);
+    }
+
+    .curtain.open.left {
+      transform: translateX(-100%);
+    }
+
+    .curtain.open.right {
+      transform: translateX(100%);
+    }
+
+    .firework {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      animation: explode 1s ease-out forwards;
+    }
+
+    @keyframes explode {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(3);
+      }
+    }
+
+    .message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      z-index: 3;
+      cursor: pointer;
+    }
+
+    .download-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #15609e;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 4;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s ease-in-out;
+    }
+
+    .download-button.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .download-button:hover {
+      background-color: #15609e;
+    }
+  </style>
+</head>
+<body>
+  <div class="image-container">
+    <img src="https://i.ibb.co/BTjMjg7/Tiffany-Ticket.png" alt="Ticket" id="reveal-image">
+  </div>
+  <div class="curtain left"></div>
+  <div class="curtain right"></div>
+  <div class="message">Click to Reveal</div>
+  <button class="download-button" id="download-btn">Download</button>
+
+  <script>
+    const message = document.querySelector('.message');
+    const downloadBtn = document.getElementById('download-btn');
+    const image = document.getElementById('reveal-image');
+
+    document.body.addEventListener('click', () => {
+      // Hide the message
+      if (message) {
+        message.style.display = 'none';
+      }
+
+      // Open the curtains
+      document.querySelector('.curtain.left').classList.add('open');
+      document.querySelector('.curtain.right').classList.add('open');
+
+      // Show the download button after the curtains have fully opened
+      setTimeout(() => {
+        downloadBtn.classList.add('visible');
+      }, 2000); // Match the curtain transition duration
+    });
+
+    // Download the image when the button is clicked
+    downloadBtn.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.href = image.src;
+      link.download = 'Tiffany_Ticket.png';
+      link.click();
+    });
+  </script>
+</body>
+</html>
